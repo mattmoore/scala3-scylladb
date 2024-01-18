@@ -1,18 +1,14 @@
 package io.mattmoore.scala.mutants.cql
 
 import com.datastax.oss.driver.api.core.CqlSession
+import com.datastax.oss.driver.api.core.config.DriverConfigLoader
 import io.mattmoore.scala.mutants.model.Mutant
 
+import java.io.File
 import java.net.InetSocketAddress
 
 class MutantsDatabaseSuite extends munit.FunSuite {
-  val session = CqlSession
-    .builder()
-    .addContactPoint(new InetSocketAddress("127.0.0.1", 9042))
-    .withLocalDatacenter("datacenter1")
-    .withKeyspace("monster")
-    .build()
-  val mutantsDb = new MutantsDatabase(session)
+  val mutantsDb = new MutantsDatabase(CqlSession.builder().build())
 
   test("all") {
     val expected = List(
