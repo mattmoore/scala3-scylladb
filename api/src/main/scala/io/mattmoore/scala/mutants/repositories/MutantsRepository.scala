@@ -15,20 +15,29 @@ trait Repository {
 
 class MutantsRepository(session: CqlSession) extends Repository {
   override def all: List[Mutant] =
-    session
-      .execute("select id, name from mutants")
-      .all
-      .asScala
-      .toList
-      .map { row =>
-        Mutant(
-          id = row.getInt("id"),
-          name = row.getString("name")
-        )
-      }
+    val cql =
+      """|SELECT id, name
+         |FROM mutants
+         |""".stripMargin
+    val bound = session.prepare(cql).bind()
+    session.execute(bound).all.asScala.toList.map { row =>
+      Mutant(
+        id = row.getInt("id"),
+        name = row.getString("name")
+      )
+    }
 
   override def get(id: Int): Mutant =
-    val rs = session.execute(s"select id, name from mutants where id = $id").one()
+    val cql =
+      """|SELECT id, name
+         |FROM mutants
+         |WHERE id = :mutantId
+         |""".stripMargin
+    val bound = session
+      .prepare(cql)
+      .bind()
+      .setInt("mutantId", id)
+    val rs = session.execute(bound).one()
     Mutant(
       id = rs.getInt("id"),
       name = rs.getString("name")
