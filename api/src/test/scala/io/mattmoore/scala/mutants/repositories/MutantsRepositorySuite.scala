@@ -1,14 +1,13 @@
-package io.mattmoore.scala.mutants.cql
+package io.mattmoore.scala.mutants.repositories
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader
-import io.mattmoore.scala.mutants.model.Mutant
+import io.mattmoore.scala.mutants.model.*
 
-import java.io.File
 import java.net.InetSocketAddress
 
-class MutantsDatabaseSuite extends munit.FunSuite {
-  val mutantsDb = new MutantsDatabase(CqlSession.builder().build())
+class MutantsRepositorySuite extends munit.FunSuite {
+  val mutantsRepository = new MutantsRepository(CqlSession.builder().build())
 
   test("all") {
     val expected = List(
@@ -21,12 +20,12 @@ class MutantsDatabaseSuite extends munit.FunSuite {
         name = "Scylla"
       )
     )
-    val rs = mutantsDb.all
+    val rs = mutantsRepository.all
     assertEquals(rs, expected)
   }
 
   test("get") {
-    val result = mutantsDb.get(1)
+    val result = mutantsRepository.get(1)
     assert(result.name == "Godzilla")
   }
 }

@@ -1,15 +1,15 @@
-package io.mattmoore.scala.mutants.cql
+package io.mattmoore.scala.mutants.service
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader
-import io.mattmoore.scala.mutants.model.Mutant
-import io.mattmoore.scala.mutants.service.MutantsService
+import io.mattmoore.scala.mutants.model.*
+import io.mattmoore.scala.mutants.repositories.*
 
 import java.net.InetSocketAddress
 
 class MutantsServiceSuite extends munit.FunSuite {
-  val mutantsDb = new MutantsDatabase(CqlSession.builder().build())
-  val mutantsService = MutantsService(mutantsDb)
+  val mutantsRepository = new MutantsRepository(CqlSession.builder().build())
+  val mutantsService = MutantsService(mutantsRepository)
 
   test("all") {
     val expected = List(

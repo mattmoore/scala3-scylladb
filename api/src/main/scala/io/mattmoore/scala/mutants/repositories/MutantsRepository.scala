@@ -1,4 +1,4 @@
-package io.mattmoore.scala.mutants.cql
+package io.mattmoore.scala.mutants.repositories
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.*
@@ -8,15 +8,15 @@ import io.mattmoore.scala.mutants.model.Mutant
 import java.net.InetSocketAddress
 import scala.jdk.CollectionConverters.*
 
-trait Database {
+trait Repository {
   def all: List[Mutant]
   def get(id: Int): Mutant
 }
 
-class MutantsDatabase(session: CqlSession) extends Database {
+class MutantsRepository(session: CqlSession) extends Repository {
   override def all: List[Mutant] =
     session
-      .execute("select id, name from monsters")
+      .execute("select id, name from mutants")
       .all
       .asScala
       .toList
@@ -28,7 +28,7 @@ class MutantsDatabase(session: CqlSession) extends Database {
       }
 
   override def get(id: Int): Mutant =
-    val rs = session.execute(s"select id, name from monsters where id = $id").one()
+    val rs = session.execute(s"select id, name from mutants where id = $id").one()
     Mutant(
       id = rs.getInt("id"),
       name = rs.getString("name")
