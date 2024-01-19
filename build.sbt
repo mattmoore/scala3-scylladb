@@ -12,7 +12,7 @@ lazy val root = (project in file("."))
 
 lazy val api = (project in file("api"))
   .settings(
-    name := "mutants-api",
+    name := "telemetry-api",
     libraryDependencies ++=
       scylladb ++
         logging ++
@@ -21,6 +21,6 @@ lazy val api = (project in file("api"))
 
 lazy val http = (project in file("http"))
   .settings(
-    name := "mutants-http",
-    mainClass := Some("io.mattmoore.scala.mutants.http.HttpService")
+    name := "telemetry-http",
+    mainClass := Some("io.mattmoore.scala.telemetry.http.HttpService")
   )

@@ -1,44 +1,44 @@
-package io.mattmoore.scala.mutants.repositories
+package io.mattmoore.scala.telemetry.repositories
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.*
 import com.datastax.oss.driver.api.core.metadata.EndPoint
-import io.mattmoore.scala.mutants.model.Mutant
+import io.mattmoore.scala.telemetry.model.TelemetryAction
 
 import java.net.InetSocketAddress
 import scala.jdk.CollectionConverters.*
 
 trait Repository {
-  def all: List[Mutant]
-  def get(id: Int): Mutant
+  def all: List[TelemetryAction]
+  def get(id: Int): TelemetryAction
 }
 
-class MutantsRepository(session: CqlSession) extends Repository {
-  override def all: List[Mutant] =
+class TelemetryRepository(session: CqlSession) extends Repository {
+  override def all: List[TelemetryAction] =
     val cql =
       """|SELECT id, name
-         |FROM mutants
+         |FROM telemetry
          |""".stripMargin
     val bound = session.prepare(cql).bind()
     session.execute(bound).all.asScala.toList.map { row =>
-      Mutant(
+      TelemetryAction(
         id = row.getInt("id"),
         name = row.getString("name")
       )
     }
 
-  override def get(id: Int): Mutant =
+  override def get(id: Int): TelemetryAction =
     val cql =
       """|SELECT id, name
-         |FROM mutants
-         |WHERE id = :mutantId
+         |FROM telemetry
+         |WHERE id = :id
          |""".stripMargin
     val bound = session
       .prepare(cql)
       .bind()
-      .setInt("mutantId", id)
+      .setInt("id", id)
     val rs = session.execute(bound).one()
-    Mutant(
+    TelemetryAction(
       id = rs.getInt("id"),
       name = rs.getString("name")
     )

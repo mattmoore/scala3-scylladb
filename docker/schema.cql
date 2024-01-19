@@ -1,9 +1,9 @@
-CREATE KEYSPACE mutants
+CREATE KEYSPACE telemetry
 WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 3};
 
-USE mutants;
+USE telemetry;
 
-CREATE TABLE mutants (id INT PRIMARY KEY, name TEXT);
+CREATE TABLE telemetry (id INT PRIMARY KEY, name TEXT);
 
-INSERT INTO mutants (id, name) VALUES (1, 'Godzilla');
-INSERT INTO mutants (id, name) VALUES (2, 'Scylla');
+INSERT INTO telemetry (id, name) VALUES (1, 'play');
+INSERT INTO telemetry (id, name) VALUES (2, 'pause');
