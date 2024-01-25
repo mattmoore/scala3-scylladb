@@ -1,14 +1,16 @@
-package io.mattmoore.scala.telemetry.repositories
+package io.mattmoore.scala.telemetry.service
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader
 import io.mattmoore.scala.telemetry.model.*
 import io.mattmoore.scala.telemetry.repositories.*
+import io.mattmoore.scala.telemetry.services.*
 
 import java.net.InetSocketAddress
 
-class TelemetryRepositorySuite extends munit.FunSuite {
+class TelemetryServiceSuite extends munit.FunSuite {
   val telemetryRepository = new TelemetryRepository(CqlSession.builder().build())
+  val telemetryService = TelemetryService(telemetryRepository)
 
   test("all") {
     val expected = List(
@@ -21,20 +23,12 @@ class TelemetryRepositorySuite extends munit.FunSuite {
         name = "pause"
       )
     )
-    val rs = telemetryRepository.all
+    val rs = telemetryService.all
     assertEquals(rs, expected)
   }
 
   test("get") {
-    val result = telemetryRepository.get(1)
+    val result = telemetryService.get(1)
     assert(result.name == "play")
-  }
-
-  test("insert") {
-    val action = TelemetryAction(3, "progress")
-    telemetryRepository.insert(action)
-    val expected = TelemetryAction(3, "progress")
-    val actual = telemetryRepository.get(3)
-    assertEquals(actual, expected)
   }
 }

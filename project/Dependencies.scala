@@ -11,6 +11,15 @@ object Dependencies {
   )
 
   lazy val testDeps = Seq(
-    "org.scalameta" %% "munit" % "0.7.29" % Test
+    "org.scalameta" %% "munit" % Versions.munit
+  )
+
+  lazy val apiDeps =
+    scylladb ++
+      logging ++
+      testDeps
+
+  lazy val integrationTestDeps = testDeps ++ Seq(
+    "com.dimafeng" %% "testcontainers-scala-munit" % Versions.testcontainersScala % Test
   )
 }

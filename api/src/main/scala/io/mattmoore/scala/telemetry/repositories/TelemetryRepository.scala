@@ -11,6 +11,7 @@ import scala.jdk.CollectionConverters.*
 trait Repository {
   def all: List[TelemetryAction]
   def get(id: Int): TelemetryAction
+  def insert(action: TelemetryAction): Unit
 }
 
 class TelemetryRepository(session: CqlSession) extends Repository {
@@ -42,4 +43,21 @@ class TelemetryRepository(session: CqlSession) extends Repository {
       id = rs.getInt("id"),
       name = rs.getString("name")
     )
+
+  override def insert(action: TelemetryAction): Unit =
+    val cql =
+      """|INSERT INTO telemetry (
+         |  id,
+         |  name
+         |) VALUES (
+         |  :id,
+         |  :name
+         |)
+         |""".stripMargin
+    val bound = session
+      .prepare(cql)
+      .bind()
+      .setInt("id", action.id)
+      .setString("name", action.name)
+    session.execute(bound).getExecutionInfo()
 }
