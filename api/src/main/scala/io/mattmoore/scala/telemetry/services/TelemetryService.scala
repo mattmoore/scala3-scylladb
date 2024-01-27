@@ -9,10 +9,10 @@ trait Service {
   def get(id: Int): TelemetryAction
 }
 
-class TelemetryService(db: TelemetryRepository) extends Service {
+class TelemetryService(repo: TelemetryRepository) extends Service {
   override def all: List[TelemetryAction] =
-    db.all
+    repo.all
 
   override def get(id: Int): TelemetryAction =
-    db.get(id)
+    repo.get(id)
 }
