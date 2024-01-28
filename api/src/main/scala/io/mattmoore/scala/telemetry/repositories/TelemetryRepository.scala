@@ -1,11 +1,8 @@
 package io.mattmoore.scala.telemetry.repositories
 
 import com.datastax.oss.driver.api.core.CqlSession
-import com.datastax.oss.driver.api.core.cql.*
-import com.datastax.oss.driver.api.core.metadata.EndPoint
 import io.mattmoore.scala.telemetry.model.TelemetryAction
 
-import java.net.InetSocketAddress
 import scala.jdk.CollectionConverters.*
 
 trait Repository {
@@ -60,4 +57,5 @@ class TelemetryRepository(session: CqlSession) extends Repository {
       .setInt("id", action.id)
       .setString("name", action.name)
     session.execute(bound).getExecutionInfo()
+    ()
 }

@@ -1,19 +1,10 @@
 package io.mattmoore.scala.telemetry.repositories
 
 import com.datastax.oss.driver.api.core.CqlSession
-import com.datastax.oss.driver.api.core.config.DriverConfigLoader
-import com.dimafeng.testcontainers.ContainerDef
-import com.dimafeng.testcontainers.GenericContainer
 import com.dimafeng.testcontainers.munit.TestContainerForEach
 import containers.ScyllaDbContainer
 import io.mattmoore.scala.telemetry.model.*
 import io.mattmoore.scala.telemetry.repositories.*
-import munit.GenericBeforeEach
-import org.testcontainers.containers.wait.strategy.Wait
-import org.testcontainers.containers.wait.strategy.WaitStrategy
-
-import java.net.InetSocketAddress
-import scala.concurrent.Future
 
 class TelemetryRepositorySuite extends munit.FunSuite with TestContainerForEach {
   override val containerDef: ScyllaDbContainer.Def =
@@ -29,6 +20,7 @@ class TelemetryRepositorySuite extends munit.FunSuite with TestContainerForEach 
     session.execute("CREATE TABLE telemetry (id INT PRIMARY KEY, name TEXT);")
     session.execute("INSERT INTO telemetry (id, name) VALUES (1, 'play');")
     session.execute("INSERT INTO telemetry (id, name) VALUES (2, 'pause');")
+    ()
 
   test("all") {
     withContainers { container =>

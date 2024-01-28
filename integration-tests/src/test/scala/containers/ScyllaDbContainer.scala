@@ -4,7 +4,6 @@ import com.dimafeng.testcontainers.GenericContainer
 import com.dimafeng.testcontainers.GenericContainer.DockerImage
 import containers.ScyllaDbContainer.ScyllaDbPort
 import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy
-import org.testcontainers.containers.wait.strategy.Wait
 
 import scala.concurrent.duration.*
 import scala.jdk.CollectionConverters.*
