@@ -2,6 +2,7 @@ import sbt.*
 
 object Dependencies {
   lazy val cats = Seq(
+    "org.typelevel" %% "cats-effect" % Versions.catsCore,
     "org.typelevel" %% "cats-effect" % Versions.catsEffect
   )
   lazy val scylladb = Seq(

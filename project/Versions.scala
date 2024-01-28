@@ -1,4 +1,5 @@
 object Versions {
+  lazy val catsCore = "2.10.0"
   lazy val catsEffect = "3.5.3"
   lazy val scylladb = "4.17.0.0"
   lazy val log4cats = "2.6.0"
