@@ -14,16 +14,18 @@ object Dependencies {
     "ch.qos.logback" % "logback-classic" % Versions.logback
   )
 
-  lazy val testDeps = Seq(
+  lazy val api =
+    scylladb ++
+      logging ++
+      unitTest
+
+  lazy val http = Seq()
+
+  lazy val unitTest = Seq(
     "org.scalameta" %% "munit" % Versions.munit
   )
 
-  lazy val apiDeps =
-    scylladb ++
-      logging ++
-      testDeps
-
-  lazy val integrationTestDeps = testDeps ++ Seq(
+  lazy val integrationTest = unitTest ++ Seq(
     "com.dimafeng" %% "testcontainers-scala-munit" % Versions.testcontainersScala % Test
   )
 }
