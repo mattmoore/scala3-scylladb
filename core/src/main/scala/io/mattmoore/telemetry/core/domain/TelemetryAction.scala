@@ -1,4 +1,4 @@
-package io.mattmoore.scala.telemetry.model
+package io.mattmoore.telemetry.core.domain
 
 case class TelemetryAction(
   id: Int,

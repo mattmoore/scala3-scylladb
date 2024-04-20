@@ -1,13 +1,11 @@
-package io.mattmoore.scala.telemetry.service
+package io.mattmoore.telemetry.repositories.scylladb
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.dimafeng.testcontainers.munit.TestContainerForEach
 import containers.ScyllaDbContainer
-import io.mattmoore.scala.telemetry.model.*
-import io.mattmoore.scala.telemetry.repositories.*
-import io.mattmoore.scala.telemetry.services.*
+import io.mattmoore.telemetry.core.domain.TelemetryAction
 
-class TelemetryServiceSuite extends munit.FunSuite with TestContainerForEach {
+class TelemetryRepositorySuite extends munit.FunSuite with TestContainerForEach {
   override val containerDef: ScyllaDbContainer.Def =
     ScyllaDbContainer.Def(9042)
 
@@ -26,8 +24,7 @@ class TelemetryServiceSuite extends munit.FunSuite with TestContainerForEach {
   test("all") {
     withContainers { container =>
       val session = CqlSession.builder().withKeyspace("telemetry").build()
-      val telemetryRepository = new TelemetryRepository(session)
-      val telemetryService = new TelemetryService(telemetryRepository)
+      val telemetryRepository = TelemetryRepository(session)
       val expected = List(
         TelemetryAction(
           id = 1,
@@ -38,18 +35,29 @@ class TelemetryServiceSuite extends munit.FunSuite with TestContainerForEach {
           name = "pause"
         )
       )
-      val actual = telemetryService.all
-      assertEquals(actual, expected)
+      val rs = telemetryRepository.all
+      assertEquals(rs, expected)
     }
   }
 
   test("get") {
     withContainers { container =>
       val session = CqlSession.builder().withKeyspace("telemetry").build()
-      val telemetryRepository = new TelemetryRepository(session)
-      val telemetryService = new TelemetryService(telemetryRepository)
-      val result = telemetryService.get(1)
+      val telemetryRepository = TelemetryRepository(session)
+      val result = telemetryRepository.get(1)
       assert(result.name == "play")
+    }
+  }
+
+  test("insert") {
+    withContainers { container =>
+      val session = CqlSession.builder().withKeyspace("telemetry").build()
+      val telemetryRepository = TelemetryRepository(session)
+      val action = TelemetryAction(3, "progress")
+      telemetryRepository.insert(action)
+      val expected = TelemetryAction(3, "progress")
+      val actual = telemetryRepository.get(3)
+      assertEquals(actual, expected)
     }
   }
 }

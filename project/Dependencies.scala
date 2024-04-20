@@ -5,6 +5,7 @@ object Dependencies {
     "org.typelevel" %% "cats-effect" % Versions.catsCore,
     "org.typelevel" %% "cats-effect" % Versions.catsEffect
   )
+
   lazy val scylladb = Seq(
     "com.scylladb" % "java-driver-core" % Versions.scylladb
   )
@@ -14,12 +15,17 @@ object Dependencies {
     "ch.qos.logback" % "logback-classic" % Versions.logback
   )
 
-  lazy val api =
+  lazy val core =
     scylladb ++
       logging ++
       unitTest
 
   lazy val http = Seq()
+
+  lazy val storageScylla =
+    scylladb ++
+      logging ++
+      unitTest
 
   lazy val unitTest = Seq(
     "org.scalameta" %% "munit" % Versions.munit

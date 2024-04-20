@@ -9,14 +9,24 @@ lazy val root = (project in file("."))
     welcomeSettings
   )
   .aggregate(
-    api,
+    core,
+    storageScylla,
     http
   )
 
-lazy val api = (project in file("api"))
+lazy val core = (project in file("core"))
   .settings(
-    name := "telemetry-api",
-    libraryDependencies ++= Dependencies.api
+    name := "telemetry-core",
+    libraryDependencies ++= Dependencies.core
+  )
+
+lazy val storageScylla = (project in file("storage-scylla"))
+  .settings(
+    name := "storage-scylla",
+    libraryDependencies ++= Dependencies.storageScylla
+  )
+  .dependsOn(
+    core
   )
 
 lazy val http = (project in file("http"))
@@ -33,7 +43,9 @@ lazy val integrationTests = (project in file("integration-tests"))
     Test / fork := true
   )
   .dependsOn(
-    api
+    core,
+    storageScylla,
+    http
   )
 
 lazy val welcomeSettings = Seq(
