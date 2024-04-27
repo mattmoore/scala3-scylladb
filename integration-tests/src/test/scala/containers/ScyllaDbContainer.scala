@@ -22,11 +22,11 @@ object ScyllaDbContainer {
   private val ScyllaDbPort = 9042
 
   private val container = GenericContainer(
-    dockerImage = "scylladb/scylla",
+    dockerImage = s"scylladb/scylla:5.4.6",
     exposedPorts = Seq(ScyllaDbPort),
     waitStrategy = new LogMessageWaitStrategy()
       .withRegEx(
-        "^.*Scylla version 5.4.1-0.20231231.3d22f42cf9c3 initialization completed.*$"
+        "^.*Scylla version .* initialization complete.*$"
       )
       .withStartupTimeout(2.minutes.toJava)
   )
